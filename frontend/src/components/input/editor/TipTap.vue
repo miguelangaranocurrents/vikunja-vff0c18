@@ -152,7 +152,7 @@
 					{{ $t('misc.save') }}
 				</BaseButton>
 			</li>
-			<li v-if="!isEditing">
+			<li v-if="!isEditing && isEditEnabled">
 				<BaseButton
 					class="done-edit"
 					@click="() => setEdit()"
@@ -214,6 +214,7 @@ import {getScrollParent} from '@/helpers/getScrollParent'
 import {setLinkInEditor} from '@/components/input/editor/setLinkInEditor'
 import {saveEditorDraft, loadEditorDraft, clearEditorDraft} from '@/helpers/editorDraftStorage'
 import {error} from '@/message'
+import {serializeSliceAsText} from '@/components/input/editor/clipboardText'
 
 const props = withDefaults(defineProps<{
 	uploadCallback?: UploadCallback,
@@ -353,6 +354,7 @@ const editor = useEditor({
 		attributes: {
 			'aria-label': props.placeholder || t('input.editor.label'),
 		},
+		clipboardTextSerializer: slice => serializeSliceAsText(slice),
 	},
 	parseOptions: {
 		preserveWhitespace: true,
